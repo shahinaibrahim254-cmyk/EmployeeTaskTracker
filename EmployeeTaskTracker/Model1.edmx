@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EmployeeTaskTrackerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="AssignedEmployeeId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK_Tasks_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="AssignedEmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_AddEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_AddTask" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Title" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="varchar" Mode="In" />
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_DeleteEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_EmployeeLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_GetEmployees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_Getemployeetasks" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_gettasksbyemployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_SearchEmployees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SearchText" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_UpdateEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_UpdateTaskStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TaskId" Type="int" Mode="In" />
+          <Parameter Name="Status" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="EmployeeTaskTrackerDBModelStoreContainer">
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tasks_Employees" Association="Self.FK_Tasks_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmployeeTaskTrackerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK_Tasks_Employees" FromRole="Employees" ToRole="Tasks" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AssignedEmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Tasks_Employees" FromRole="Tasks" ToRole="Employees" />
+        </EntityType>
+        <Association Name="FK_Tasks_Employees">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Tasks" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="AssignedEmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeTaskTrackerDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Tasks" EntityType="Self.Task" />
+          <AssociationSet Name="FK_Tasks_Employees" Association="Self.FK_Tasks_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <FunctionImport Name="sp_AddEmployee">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AddTask">
+            <Parameter Name="Title" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_DeleteEmployee">
+          <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_EmployeeLogin" ReturnType="Collection(EmployeeTaskTrackerDBModel.sp_EmployeeLogin_Result)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetEmployees" ReturnType="Collection(EmployeeTaskTrackerDBModel.sp_GetEmployees_Result)" />
+          <FunctionImport Name="sp_Getemployeetasks" ReturnType="Collection(EmployeeTaskTrackerDBModel.sp_Getemployeetasks_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_gettasksbyemployee" ReturnType="Collection(EmployeeTaskTrackerDBModel.sp_gettasksbyemployee_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_SearchEmployees" ReturnType="Collection(EmployeeTaskTrackerDBModel.sp_SearchEmployees_Result)">
+          <Parameter Name="SearchText" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UpdateEmployee">
+            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UpdateTaskStatus">
+            <Parameter Name="TaskId" Mode="In" Type="Int32" />
+            <Parameter Name="Status" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_EmployeeLogin_Result">
+          <Property Type="Int32" Name="EmployeeId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="sp_GetEmployees_Result">
+          <Property Type="Int32" Name="EmployeeId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_Getemployeetasks_Result">
+          <Property Type="Int32" Name="TaskId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_gettasksbyemployee_Result">
+          <Property Type="Int32" Name="TaskId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="AssignedEmployeeId" Nullable="false" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_SearchEmployees_Result">
+          <Property Type="Int32" Name="EmployeeId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmployeeTaskTrackerDBModelStoreContainer" CdmEntityContainer="EmployeeTaskTrackerDBEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="EmployeeTaskTrackerDBModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="EmployeeTaskTrackerDBModel.Task">
+              <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AssignedEmployeeId" ColumnName="AssignedEmployeeId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_AddEmployee" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_AddEmployee" />
+          <FunctionImportMapping FunctionImportName="sp_AddTask" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_AddTask" />
+          <FunctionImportMapping FunctionImportName="sp_DeleteEmployee" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_DeleteEmployee" />
+          <FunctionImportMapping FunctionImportName="sp_EmployeeLogin" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_EmployeeLogin">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EmployeeTaskTrackerDBModel.sp_EmployeeLogin_Result">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetEmployees" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_GetEmployees">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EmployeeTaskTrackerDBModel.sp_GetEmployees_Result">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_Getemployeetasks" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_Getemployeetasks">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EmployeeTaskTrackerDBModel.sp_Getemployeetasks_Result">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_gettasksbyemployee" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_gettasksbyemployee">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EmployeeTaskTrackerDBModel.sp_gettasksbyemployee_Result">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AssignedEmployeeId" ColumnName="AssignedEmployeeId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_SearchEmployees" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_SearchEmployees">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EmployeeTaskTrackerDBModel.sp_SearchEmployees_Result">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_UpdateEmployee" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_UpdateEmployee" />
+          <FunctionImportMapping FunctionImportName="sp_UpdateTaskStatus" FunctionName="EmployeeTaskTrackerDBModel.Store.sp_UpdateTaskStatus" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

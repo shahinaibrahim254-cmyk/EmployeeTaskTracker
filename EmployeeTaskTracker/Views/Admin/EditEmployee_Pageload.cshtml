@@ -1,0 +1,90 @@
+﻿@model EmployeeTaskTracker.Models.EmployeeVM
+
+@{
+    Layout = null;
+}
+
+<style>
+    body {
+        background-color: #f4f6f8;
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
+
+    .edit-box {
+        background-color: #ffffff;
+        padding: 30px;
+        max-width: 500px;
+        margin: auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        color: #2c3e50;
+        font-weight: bold;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        border-radius: 3px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-success {
+        background-color: #2ecc71;
+    }
+
+    .btn-secondary {
+        background-color: #95a5a6;
+        margin-left: 10px;
+    }
+
+    .validation {
+        color: red;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<h2>Edit Employee</h2>
+
+<div class="edit-box">
+    @using (Html.BeginForm("EditEmployee_click", "Admin", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.EmployeeId)
+
+        <label>Name</label>
+        @Html.TextBoxFor(m => m.Name)
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "validation" })
+
+        <label>Email</label>
+        @Html.TextBoxFor(m => m.Email)
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "validation" })
+
+        <br />
+
+        <input type="submit" value="Update" class="btn btn-success" />
+        <a href="@Url.Action("Admin_Home","Admin")" class="btn btn-secondary">Cancel</a>
+    }
+</div>

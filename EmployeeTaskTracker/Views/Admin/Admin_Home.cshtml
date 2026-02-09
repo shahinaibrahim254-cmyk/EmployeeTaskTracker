@@ -1,0 +1,157 @@
+﻿@model List<EmployeeTaskTracker.Models.EmployeeVM>
+
+@{
+    Layout = null;
+}
+
+<style>
+    body {
+        background-color: #f4f6f8;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    .box {
+        background-color: #ffffff;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+        border: 1px solid #ddd;
+    }
+
+    .search-area {
+        margin-bottom: 15px;
+    }
+
+    input[type="text"] {
+        padding: 6px;
+        width: 400px;
+        border: 1px solid #ccc;
+    }
+
+    .btn {
+        padding: 6px 10px;
+        border: none;
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        margin-left: 5px;
+    }
+
+    .btn-secondary {
+        background-color: #95a5a6;
+        color: white;
+    }
+
+
+    .btn-info {
+        background-color: #5dade2;
+    }
+
+    .btn-primary {
+        background-color: #3498db;
+    }
+
+    .btn-warning {
+        background-color: #f1c40f;
+        color: #000;
+    }
+
+    .btn-danger {
+        background-color: #e74c3c;
+    }
+
+    .btn-success {
+        background-color: #2ecc71;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #e0e0e0;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #ecf0f1;
+        color: #2c3e50;
+    }
+</style>
+
+<h2>Admin Dashboard</h2>
+
+<div class="box">
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div id="successMsg" class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <script>
+        setTimeout(function () {
+            var msg = document.getElementById("successMsg");
+            if (msg) {
+                msg.style.display = "none";
+            }
+        }, 2000);
+    </script>
+
+    @using (Html.BeginForm("Admin_Home", "Admin", FormMethod.Get))
+    {
+<div class="search-area">
+    <input type="text" name="search" placeholder="Search employee" />
+    <input type="submit" value="Search" class="btn btn-info" />
+
+    <a href="@Url.Action("Admin_Home","Admin")" class="btn btn-secondary">
+        Clear
+    </a>
+    <a href="@Url.Action("AddEmployee_pageload","Admin")" class="btn btn-primary">
+        Add Employee
+    </a>
+</div>
+    }
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+
+        @foreach (var emp in Model)
+        {
+            <tr>
+                <td>@emp.Name</td>
+                <td>@emp.Email</td>
+                <td>
+                    <a href="@Url.Action("EditEmployee_pageload","Admin", new { id = emp.EmployeeId })"
+                       class="btn btn-warning">Edit</a>
+
+                    <a href="@Url.Action("DeleteEmployee","Admin", new { id = emp.EmployeeId })"
+                       class="btn btn-danger"
+                       onclick="return confirm('Are you sure?')">Delete</a>
+
+                    <a href="@Url.Action("AddTask_pageload","Task", new { empId = emp.EmployeeId })"
+                       class="btn btn-success">Add Task</a>
+
+                    <a href="@Url.Action("ViewEmployeeTasks","Admin", new { empId = emp.EmployeeId })"
+                       class="btn btn-info">View Tasks</a>
+
+
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>

@@ -1,0 +1,115 @@
+﻿@model EmployeeTaskTracker.Models.Tasks
+
+
+@{
+    Layout = null;
+}
+<style>
+    body {
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background: #f2f4f7;
+    }
+
+    .page-center {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .task-box {
+        background: #ffffff;
+        width: 420px;
+        padding: 28px;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        border-top: 4px solid #4caf50;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 22px;
+        color: #2f3e46;
+        font-weight: 600;
+    }
+
+    label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 18px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+    }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+        }
+
+    .btn-green {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #4caf50, #43a047);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.1s;
+    }
+    .btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 22px;
+        background-color: #4caf50;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background-color 0.3s, transform 0.1s;
+    }
+
+        .btn:hover {
+            background-color: #388e3c;
+            transform: translateY(-1px);
+        }
+
+        .btn-green:hover {
+            background: linear-gradient(135deg, #43a047, #388e3c);
+            transform: translateY(-1px);
+        }
+</style>
+
+
+<div class="page-center">
+    <div class="task-box">
+
+        <h2>Add Task</h2>
+
+        @using (Html.BeginForm("AddTask_click", "Task", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.AssignedEmployeeId)
+
+            <label>Title</label>
+            @Html.TextBoxFor(m => m.Title)
+
+            <label>Description</label>
+            @Html.TextBoxFor(m => m.Description)
+
+            <input type="submit" value="Add Task" class="btn-green" />
+        }
+        <a href="@Url.Action("Admin_Home","Admin")" class="btn">Back</a>
+    </div>
+</div>

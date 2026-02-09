@@ -1,0 +1,106 @@
+﻿
+@model List<EmployeeTaskTracker.sp_gettasksbyemployee_Result>
+
+@{
+    
+    Layout = null;
+}
+
+<style>
+    body {
+        background-color: #f2f8f4;
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        text-align: center;
+        color: #1e8449;
+        margin-top: 40px;
+        margin-bottom: 30px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+
+    .task-box {
+        background-color: #ffffff;
+        padding: 30px;
+        max-width: 950px;
+        margin: auto;
+        border: 1px solid #cfeee0;
+        border-radius: 4px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #d5f0e3;
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #e9f7ef;
+        color: #1e8449;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f8fcfa;
+    }
+
+    .btn-success {
+        background-color: #2ecc71;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 3px;
+        color: #fff;
+        text-decoration: none;
+    }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+    .status-completed {
+        color: #27ae60;
+        font-weight: bold;
+    }
+</style>
+
+<h2>My Tasks</h2>
+
+<div class="task-box">
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.Description</td>
+                <td>@task.Status</td>
+                <td>
+                    @if (task.Status != "Completed")
+                    {
+                        <a href="@Url.Action("MarkCompleted","Employee", new { taskId = task.TaskId })"
+                           class="btn-success">
+                            Mark Completed
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="status-completed">Completed</span>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
